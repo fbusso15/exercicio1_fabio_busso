@@ -1,8 +1,8 @@
 	
 Label Root
 {
-	Son: MODEL
-	Label MODEL
+	Son: Passeio_Aleatorio
+	Label Passeio_Aleatorio
 	{
 		Var: X
 		Param: c
@@ -17,9 +17,9 @@ DATA
 
 Object: Root C	1
 
-Object: MODEL C	1
+Object: Passeio_Aleatorio C	1
 Var: X 1 s + n p	0
-Param: c 0 n + n n	1
+Param: c 0 n + n n	5
 
 SIM_NUM 1
 SEED 1
@@ -33,8 +33,8 @@ Object_Root
 (no description available)
 END_DESCRIPTION
 
-Object_MODEL
-(no description available)
+Object_Passeio_Aleatorio
+Tarefa de casa: Criar um passeio Aleatorio com 1 e 10 objetos.
 _INIT_
 
 END_DESCRIPTION
@@ -48,11 +48,12 @@ END_DESCRIPTION
 Parameter_c
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 1 instances drawn from integer uniform distribution between 1 and 10.
 END_DESCRIPTION
 
 
 DOCUOBSERVE
+Root
 
 END_DOCUOBSERVE
 
@@ -72,18 +73,17 @@ EQ_FILE
 
 MODELBEGIN
 
-// insert your equations here, between the MODELBEGIN and MODELEND words
 
-
-
-//Criando uma variável "X" defasada um periodo a partir de um parâmetro constante "c":
+/*
+Criando uma variável "X" defasada um periodo a partir de um valor aleatório "RND" entre 0 e 1 multiplicado por uma constante "c" cujo valor também será aleatório (A partir da opção random integer com intervalo entre [1 e 10]):
+*/
 
 EQUATION("X")
 /*
 Variável X
 */
 
-RESULT(VL("X",1)+V("c"))
+RESULT(VL("X",1) + (RND * V("c")))
 
 
 

@@ -7,18 +7,17 @@
 
 MODELBEGIN
 
-// insert your equations here, between the MODELBEGIN and MODELEND words
 
-
-
-//Criando uma variável "X" defasada um periodo a partir de um parâmetro constante "c":
+/*
+Criando uma variável "X" defasada um periodo a partir de um valor aleatório "RND" entre 0 e 1 multiplicado por uma constante "c" cujo valor também será aleatório (A partir da opção random integer com intervalo entre [1 e 10]):
+*/
 
 EQUATION("X")
 /*
 Variável X
 */
 
-RESULT(VL("X",1)+V("c"))
+RESULT(VL("X",1) + (RND * V("c")))
 
 
 
