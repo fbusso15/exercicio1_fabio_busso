@@ -1,11 +1,21 @@
 	
 Label Root
 {
-	Son: Passeio_Aleatorio
-	Label Passeio_Aleatorio
+	Son: SECTOR
+	Label SECTOR
 	{
-		Var: X
-		Param: c
+		Son: FIRMS
+		Label FIRMS
+		{
+			Var: X
+			Param: c
+			Var: Count_X
+
+		}
+
+		Var: Ave_X
+		Var: Max_X
+		Var: Sum_X
 
 	}
 
@@ -17,9 +27,15 @@ DATA
 
 Object: Root C	1
 
-Object: Passeio_Aleatorio C	1
-Var: X 1 s + n p	0
-Param: c 0 n + n n	5
+Object: SECTOR C	1
+Var: Ave_X 0 s + n p
+Var: Max_X 0 s + n p
+Var: Sum_X 0 s + n p
+
+Object: FIRMS C	10
+Var: X 1 s + n n	0	0	0	0	0	0	0	0	0	0
+Param: c 0 n + n n	1	2	3	4	5	6	7	8	9	10
+Var: Count_X 0 s + n n
 
 SIM_NUM 1
 SEED 1
@@ -33,23 +49,40 @@ Object_Root
 (no description available)
 END_DESCRIPTION
 
-Object_Passeio_Aleatorio
-Tarefa de casa: Criar um passeio Aleatorio com 1 e 10 objetos.
+Object_SECTOR
+(no description available)
+END_DESCRIPTION
 
+Variable_Ave_X
+(no description available)
+END_DESCRIPTION
+
+Variable_Max_X
+(no description available)
+END_DESCRIPTION
+
+Variable_Sum_X
+(no description available)
+END_DESCRIPTION
+
+Object_FIRMS
+(no description available)
 END_DESCRIPTION
 
 Variable_X
-Variável X
-
-
+(no description available)
 _INIT_
-All 1 instances equal to 0.
+All 10 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_c
 (no description available)
 _INIT_
-All 1 instances drawn from integer uniform distribution between 1 and 10.
+All 10 instances ranging from 1 to 10 (increments of 1).
+END_DESCRIPTION
+
+Variable_Count_X
+(no description available)
 END_DESCRIPTION
 
 
@@ -75,17 +108,82 @@ MODELBEGIN
 
 
 /*
-Criando uma variável "X" defasada um periodo a partir de um valor aleatório "RND" entre 0 e 1 multiplicado por uma constante "c" cujo valor também será aleatório (A partir da opção random integer com intervalo entre [1 e 10]):
+Variável "X" defasada um periodo a partir de um valor aleatório "RND" entre 0 e 1 multiplicado por uma constante "c".
 */
-
-EQUATION("X")
-/*
-Variável X
-*/
-
+EQUATION("X") 
 RESULT(VL("X",1) + (RND * V("c")))
+// Variável que Retorna a contagem das variáveis X
+EQUATION("Count_X")
+RESULT(COUNT("X"))
+
+// Variável que Retorna a Soma de todos os X [O mesmo que utilizar a Macro (SUM("X")]
+EQUATION("Sum_X") 
+v[0]=0;
+CYCLE(cur, "FIRMS")
+{
+	v[1]=VS(cur,"X");
+	v[0]=v[0]+v[1];
+}
+RESULT(v[0])
+
+// Variável que Retorna a Média de todos os X [O mesmo que utilizar a Macro (AVE("X")]
+EQUATION("Ave_X") 
+v[0]=0;
+v[1]=0;
+v[2]=0;
+CYCLE(cur, "FIRMS")
+{
+	v[3]=VS(cur,"X");
+	v[0]=v[0]+v[3];
+	v[1]=VS(cur,"Count_X");
+}
+if(v[1]!=0) v[2]=v[0]/v[1];	
+else v[2]=0;
+RESULT(v[2])
+
+// Retorna o valor Máximo de todos os X [O mesmo que utilizar a Macro (MAX("X")]
+EQUATION("Max_X") 
+v[0]=0;
+CYCLE(cur, "FIRMS")
+{
+	v[1]=VS(cur,"X");
+	if(v[1]>=v[0]) 	v[0]=v[1]; else v[0]=v[0];
+}
+RESULT(v[0])
+
+/*
+Participação de cada X em Relação ao valor total de todos os X [Seria igual a "Participação no Mercado de cada Firma"]
+*/
+EQUATION("X_Share") 
+RESULT((V("X")/V("X_Sum")))
 
 
+// Somatório das Participações de cada Firma [Deve somar 1 obrigatóriamente]
+EQUATION("Share_Sum") 
+v[0]=0;
+CYCLE(cur, "FIRM")
+{
+	v[1]=VS(cur,"X_Share");
+	v[0]=v[0]+v[1];
+}
+RESULT(v[0])
+
+
+/*
+EQUATION("Leader") //Who is the boss?
+v[0]=0; //Share do campeão
+v[1]=0; //Token de posição
+v[2]=1; //Token de campeão
+CYCLE(cur, "FIRM")
+{
+	v[3]=VS(cur,"X_Share");
+	if(v[3]<v[0]) 
+	{v[2]=v[2]+1;} //Challenger perde e aumenta token do campeão
+	else
+	{v[0]=v[3] ; v[1]=v[1]+v[2] ; v[2]=1;} //Challenger ganha, vira novo campeão, transfere tokens do campeão para posição e reinicia o streak de vitórias
+}
+RESULT(v[1])
+*/
 
 MODELEND
 

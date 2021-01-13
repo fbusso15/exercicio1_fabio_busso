@@ -11,20 +11,20 @@ SRC=src
 EXT=.exe
 
 # Libraries options
-TCL_VERSION=85
-PATH_TCL_HEADER=$(LSDROOT)/gnu/include
-PATH_TK_HEADER=$(LSDROOT)/gnu/include
-PATH_HEADER=$(LSDROOT)/gnu/include
-PATH_TCL_LIB=$(LSDROOT)/gnu/lib
-PATH_TK_LIB=$(LSDROOT)/gnu/lib
-PATH_LIB=$(LSDROOT)/gnu/lib
+TCL_VERSION=86
+PATH_TCL_HEADER=$(LSDROOT)/gnu64/include
+PATH_TK_HEADER=$(LSDROOT)/gnu64/include
+PATH_HEADER=$(LSDROOT)/gnu64/include
+PATH_TCL_LIB=$(LSDROOT)/gnu64/lib
+PATH_TK_LIB=$(LSDROOT)/gnu64/lib
+PATH_LIB=$(LSDROOT)/gnu64/lib
 TCL_LIB=-ltcl$(TCL_VERSION)
 TK_LIB=-ltk$(TCL_VERSION)
 LIBS=-lz
 
 # Compiler options
-CC=g++
-GLOBAL_CC=-march=pentium-mmx -mtune=prescott -w
+CC=x86_64-w64-mingw32-g++
+GLOBAL_CC=-march=native -std=gnu++14 -w
 SSWITCH_CC=-mthreads -mwindows -O3
 LSDROOT=C:/Lsd
 
