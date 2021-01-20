@@ -1,2 +1,2 @@
-Ave_X Leader Max_X Share_X Sum_Share_X Sum_X X
-c IdFirm
+Ave_X Leader Max_X Rank Share_X Sum_Share_X Sum_X X
+c firm_rank

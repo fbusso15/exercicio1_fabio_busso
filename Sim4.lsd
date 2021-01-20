@@ -9,8 +9,8 @@ Label Root
 		{
 			Var: X
 			Param: c
-			Param: IdFirm
 			Var: Share_X
+			Param: firm_rank
 
 		}
 
@@ -19,6 +19,7 @@ Label Root
 		Var: Sum_Share_X
 		Var: Sum_X
 		Var: Leader
+		Var: Rank
 
 	}
 
@@ -35,13 +36,14 @@ Var: Ave_X 0 s + n n
 Var: Max_X 0 s + n n
 Var: Sum_Share_X 0 s + n n
 Var: Sum_X 0 s + n n
-Var: Leader 0 s + n p
+Var: Leader 0 s + n n
+Var: Rank 0 s + n p
 
 Object: FIRM C	10
 Var: X 1 s + n n	0	0	0	0	0	0	0	0	0	0
 Param: c 0 n + n n	1	2	3	4	5	6	7	8	9	10
-Param: IdFirm 0 n + n n	1	2	3	4	5	6	7	8	9	10
 Var: Share_X 0 s + n n
+Param: firm_rank 0 n + n n	0	0	0	0	0	0	0	0	0	0
 
 SIM_NUM 1
 SEED 1
@@ -91,6 +93,12 @@ _INIT_
 
 END_DESCRIPTION
 
+Variable_Rank
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
 Object_FIRM
 (no description available)
 _INIT_
@@ -109,16 +117,16 @@ _INIT_
 All 10 instances ranging from 1 to 10 (increments of 1).
 END_DESCRIPTION
 
-Parameter_IdFirm
-(no description available)
-_INIT_
-All 10 instances increasing from 1 with step 1.
-END_DESCRIPTION
-
 Variable_Share_X
 (no description available)
 _INIT_
 
+END_DESCRIPTION
+
+Parameter_firm_rank
+(no description available)
+_INIT_
+All 10 instances equal to 0.
 END_DESCRIPTION
 
 
