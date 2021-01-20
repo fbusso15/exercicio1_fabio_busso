@@ -13,7 +13,6 @@ EQUATION("X")
 RESULT(VL("X",1) + (RND * V("c")))
 
 /* Variável que Retorna a Soma de todos os X [O mesmo que utilizar a Macro (SUM("X"))] - Nível do Objeto: SECTOR */
-
 EQUATION("Sum_X") 
 v[0]=0;
 CYCLE(cur, "FIRM")
@@ -31,7 +30,7 @@ CYCLE(cur, "FIRM")
 {
 	v[3]=VS(cur,"X");
 	v[0]=v[0]+v[3];
-	}
+}
 v[1]=COUNT_ALL("FIRM");
 if(v[1]!=0) v[2]=v[0]/v[1];	
 else v[2]=0;
@@ -69,22 +68,17 @@ cur1=SEARCH_CND("X", v[0]);			// o cur armazena um objeto especifico enquanto o 
 v[1]=SEARCH_INST(cur1);					// retorna a posição no objeto especificado
 RESULT(v[1])
 
-
-/* Exercicio 2.1 - Criar um Rank das Firmas - Nível do Objeto: Sector */
-
+/* Exercicio 2.1 - Criar um Rank das Firmas - Nível do Objeto: SECTOR */
 EQUATION("Rank")
-v[0]=1;
-	CYCLE(cur, "FIRM")
-	{
-			cur1=SORT("FIRM", "Share_X", "DOWN");
-			CYCLE(cur1, "FIRM")
-			{
-					WRITES(cur, "firm_rank", v[0]);
-					v[0]=v[0]+1;	
-			}				
-	}
+SORT("FIRM", "Share_X", "DOWN");
+v[0]=0; 
+CYCLE(cur, "FIRM")
+{
+	v[0]=v[0]+1;
+	WRITES(cur, "firm_rank", v[0]);
+}				
+RESULT(0)
 
-RESULT(v[0])
 
 MODELEND // Fim do Modelo
 
