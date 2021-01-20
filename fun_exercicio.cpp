@@ -76,7 +76,7 @@ EQUATION("Rank")
 v[0]=1;
 	CYCLE(cur, "FIRM")
 	{
-			cur1=SORT("FIRM", "X", "DOWN");
+			cur1=SORT("FIRM", "Share_X", "DOWN");
 			CYCLE(cur1, "FIRM")
 			{
 					WRITES(cur, "firm_rank", v[0]);
