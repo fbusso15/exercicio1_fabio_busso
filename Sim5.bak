@@ -7,10 +7,14 @@ Label Root
 		Son: FIRM
 		Label FIRM
 		{
-			Var: X
-			Param: c
-			Var: Share_X
 			Param: firm_rank
+			Var: Price
+			Var: Quality
+			Var: X
+			Param: elasticity_price
+			Param: elasticity_quality
+			Param: sensitivity_share
+			Var: Share_X
 
 		}
 
@@ -40,10 +44,14 @@ Var: Leader 0 s + n n
 Var: Rank 0 s + n n
 
 Object: FIRM C	10
-Var: X 1 s + n n	0	0	0	0	0	0	0	0	0	0
-Param: c 0 n + n n	1	2	3	4	5	6	7	8	9	10
-Var: Share_X 0 s + n n
-Param: firm_rank 0 s + n p	0	0	0	0	0	0	0	0	0	0
+Param: firm_rank 0 s + n n	0	0	0	0	0	0	0	0	0	0
+Var: Price 0 s + n n
+Var: Quality 0 s + n n
+Var: X 0 s + n n
+Param: elasticity_price 0 s + n n	0	0.111111111111111	0.222222222222222	0.333333333333333	0.444444444444444	0.555555555555556	0.666666666666667	0.777777777777778	0.888888888888889	1
+Param: elasticity_quality 0 s + n n	0	0.111111111111111	0.222222222222222	0.333333333333333	0.444444444444444	0.555555555555556	0.666666666666667	0.777777777777778	0.888888888888889	1
+Param: sensitivity_share 0 s + n n	0	0.111111111111111	0.222222222222222	0.333333333333333	0.444444444444444	0.555555555555556	0.666666666666667	0.777777777777778	0.888888888888889	1
+Var: Share_X 1 s + n n	0	0	0	0	0	0	0	0	0	0
 
 SIM_NUM 1
 SEED 1
@@ -105,25 +113,49 @@ _INIT_
 
 END_DESCRIPTION
 
+Parameter_firm_rank
+(no description available)
+_INIT_
+All 10 instances equal to 0.
+END_DESCRIPTION
+
+Variable_Price
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Quality
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
 Variable_X
 (no description available)
 _INIT_
 All 10 instances equal to 0.
 END_DESCRIPTION
 
-Parameter_c
+Parameter_elasticity_price
 (no description available)
 _INIT_
-All 10 instances ranging from 1 to 10 (increments of 1).
+All 10 instances ranging from 0 to 1 (increments of 0.111111).
+END_DESCRIPTION
+
+Parameter_elasticity_quality
+(no description available)
+_INIT_
+All 10 instances ranging from 0 to 1 (increments of 0.111111).
+END_DESCRIPTION
+
+Parameter_sensitivity_share
+(no description available)
+_INIT_
+All 10 instances ranging from 0 to 1 (increments of 0.111111).
 END_DESCRIPTION
 
 Variable_Share_X
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Parameter_firm_rank
 (no description available)
 _INIT_
 All 10 instances equal to 0.

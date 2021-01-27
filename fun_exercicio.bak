@@ -8,43 +8,71 @@
 MODELBEGIN // Inicio do Modelo
 
 
-/* Variável "X" defasada um periodo a partir de um valor aleatório "RND" entre 0 e 1 multiplicado por uma constante "c" - Nível do Objeto: FIRM */
+/* Exercicio 3 - Variável X = Vendas que dependem de: Preço / Qualidade / Componente Aleátório - Nível do Objeto: FIRM */
+
+
+
 EQUATION("X") 
-RESULT(VL("X",1) + (RND * V("c")))
+	v[1]=V("Price");
+	v[2]=VL("Price",1);
+	if (v[2]>v[1]) {v[5]=(v[5]*-1);}
+	else {v[5]=v[5];} 
+	v[3]=V("Quality");
+	v[4]=VL("Quality",1);
+	v[5]=V("elasticity_price");									// 0 < "elasticity_price" < 1 - Parametro que Retorna a sensibilidade do Aumento das Vendas em relação a mudança nos Preço
+	v[6]=V("elasticity_quality");							// 0 < "elasticity_quality" < 1 - Parametro que Retorna a sensibilidade do Aumento das Vendas em relação a mudança de Qualidade
+RESULT(v[5]*(v[1]-v[2]) + v[6]*(v[3]-v[4])+(VL("X",1)))
+
+
+EQUATION("Price")
+		v[0]=VL("Price",1);
+		v[1]=VL("Share_X",1)-VL("Share_X",2);
+		if (v[1]>0) {v[2]=v[1];}
+		else {v[2]=0;}
+		v[3]=V("sensitivity_share"); // 0 < "sensitivity_price" < 1 - Parametro que Retorna o Aumento do preço em relação ao ganho de Market Share da Firma
+RESULT((v[3]*v[2] + v[0]))
+
+
+EQUATION("Quality")
+		v[0]=VL("Quality",1);
+		v[1]=RND;
+		if (v[1]>0) {v[2]=v[1];}
+		else {v[2]=0;}
+RESULT(v[0]+v[2])
 
 /* Variável que Retorna a Soma de todos os X [O mesmo que utilizar a Macro (SUM("X"))] - Nível do Objeto: SECTOR */
 EQUATION("Sum_X") 
-v[0]=0;
-CYCLE(cur, "FIRM")
-{
-	v[1]=VS(cur,"X");
-	v[0]=v[0]+v[1];
-}
+		v[0]=0;
+		CYCLE(cur, "FIRM")
+		{
+			v[1]=VS(cur,"X");
+			v[0]=v[0]+v[1];
+		}
 RESULT(v[0])
 
 /* Variável que Retorna a Média de todos os X [O mesmo que utilizar a Macro (AVE("X"))] - Nível do Objeto: SECTOR */
 EQUATION("Ave_X") 
-v[0]=0;
-v[2]=0;
-CYCLE(cur, "FIRM")
-{
-	v[3]=VS(cur,"X");
-	v[0]=v[0]+v[3];
-}
-v[1]=COUNT_ALL("FIRM");
-if(v[1]!=0) v[2]=v[0]/v[1];	
-else v[2]=0;
+		v[0]=0;
+		v[2]=0;
+		CYCLE(cur, "FIRM")
+		{
+			v[3]=VS(cur,"X");
+			v[0]=v[0]+v[3];
+		}
+		v[1]=COUNT_ALL("FIRM");
+		if(v[1]!=0) v[2]=v[0]/v[1];	
+		else v[2]=0;
 RESULT(v[2])
 
 /* Retorna o valor Máximo de todos os X [O mesmo que utilizar a Macro (MAX("X"))] - Nível do Objeto: SECTOR */
 EQUATION("Max_X") 
-v[0]=0;
-CYCLE(cur, "FIRM")
-{
-	v[1]=VS(cur,"X");
-	if(v[1]>v[0])	v[0]=v[1]; 
-	else v[0]=v[0];
-}
+		v[0]=0;
+		CYCLE(cur, "FIRM")
+		{
+			v[1]=VS(cur,"X");
+			if(v[1]>v[0])	v[0]=v[1]; 
+			else v[0]=v[0];
+		}
 RESULT(v[0])
 
 /* Participação de cada X em Relação ao valor total de todos os X [Seria igual a "Participação no Mercado de cada Firma"] - Nível do Objeto: FIRM */
@@ -53,30 +81,42 @@ RESULT((V("X")/V("Sum_X")))
 
 /* Somatório das Participações de cada Firma [Deve somar 1 e o mesmo que utilizar (SUM(Share_X))] - Nível do Objeto: SECTOR */
 EQUATION("Sum_Share_X") 
-v[0]=0;
-CYCLE(cur, "FIRM")
-{
-	v[1]=VS(cur,"Share_X");
-	v[0]=v[0]+v[1];
-}
+		v[0]=0;
+		CYCLE(cur, "FIRM")
+		{
+			v[1]=VS(cur,"Share_X");
+			v[0]=v[0]+v[1];
+		}
 RESULT(v[0])
 
-/* Exercicio Desafio - Encontrar a Firma com o Maior X a cada Período (A Líder de Mercado) - Nível do Objeto: SECTOR */
+/* Encontrar a Firma com o Maior X a cada Período (A Líder de Mercado) - Nível do Objeto: SECTOR */
 EQUATION("Leader")
-v[0]=V("Max_X");
-cur1=SEARCH_CND("X", v[0]);			// o cur armazena um objeto especifico enquanto o v[] armazena um valor
-v[1]=SEARCH_INST(cur1);					// retorna a posição no objeto especificado
+		v[0]=V("Max_X");
+		cur1=SEARCH_CND("X", v[0]);							 // O cur armazena um objeto especifico enquanto o v[] armazena um valor
+		v[1]=SEARCH_INST(cur1);									 // Retorna a posição no objeto especificado
 RESULT(v[1])
 
-/* Exercicio 2.1 - Criar um Rank das Firmas - Nível do Objeto: SECTOR */
+/* Cria um Rank das Firmas - Nível do Objeto: SECTOR */
 EQUATION("Rank")
-SORT("FIRM", "Share_X", "DOWN");
-v[0]=0; 
-CYCLE(cur, "FIRM")
-{
-	v[0]=v[0]+1;
-	WRITES(cur, "firm_rank", v[0]);
-}				
+		SORT("FIRM", "Share_X", "DOWN");
+		v[0]=0; 
+		CYCLE(cur, "FIRM")
+		{
+			v[0]=v[0]+1;
+			WRITES(cur, "firm_rank", v[0]);
+		}				
+RESULT(0)
+
+/* Equação para Entrada e Saída de Firmas */
+EQUATION("EntryExit") 
+		v[0]=V("switch_entry");
+		if(v[0]==1)
+		{
+			cur=SEARCH_CND("firm_rank", 10); 			 // Deleta a firma com Posição no Rank das Firmas =10
+			DELETE(cur);
+			cur1=SEARCH_CND("firm_rank", 5);
+			ADDOBJ_EX("FIRM", cur1); 							 // Cria novo objeto (No caso uma Firma). O [EX] cria o objeto com os valores do [cur1] (no caso a firma de rank =5)
+		}
 RESULT(0)
 
 

@@ -37,13 +37,13 @@ Var: Max_X 0 s + n n
 Var: Sum_Share_X 0 s + n n
 Var: Sum_X 0 s + n n
 Var: Leader 0 s + n n
-Var: Rank 0 s + n p
+Var: Rank 0 s + n n
 
 Object: FIRM C	10
 Var: X 1 s + n n	0	0	0	0	0	0	0	0	0	0
 Param: c 0 n + n n	1	2	3	4	5	6	7	8	9	10
 Var: Share_X 0 s + n n
-Param: firm_rank 0 n + n n	0	0	0	0	0	0	0	0	0	0
+Param: firm_rank 0 s + n p	0	0	0	0	0	0	0	0	0	0
 
 SIM_NUM 1
 SEED 1

@@ -1,2 +1,2 @@
-Ave_X Leader Max_X Rank Share_X Sum_Share_X Sum_X X
-c firm_rank
+Ave_X EntryExit Leader Max_X Price Quality Rank Share_X Sum_Share_X Sum_X X
+elasticity_price elasticity_quality firm_rank sensitivity_share switch_entry
